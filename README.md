@@ -6,7 +6,7 @@ Data kami meliputi beberapa informasi penting soal postingan yang dimiliki oleh 
 3. Partai Gerakan Rakyat Indonesia (Gerindra) dengan username @dpcgerindrakotamalang
 4. Partai Demokrasi Indonesia Perjuangan (PDIP) dengan username @dpcpdiperjuangankotamalang
 
-Kami mengolah data menggunakan kode python bernama <sub>analytics/analytic.py</sub> untuk meng-konvert data <sub>JSON</sub> menjadi <sub>XLSX</sub> (berada di direktori analytics). Data media sosial yang berupa <sub>JSON</sub> kami peroleh melalui tools _Apify_. Output berada di dalam <sub>analisis_konten.xlsx</sub>.
+Kami mengolah data menggunakan kode python bernama `analytics/analytic.py` untuk meng-konvert data `JSON` menjadi `XLSX` (berada di direktori analytics). Data media sosial yang berupa `JSON` kami peroleh melalui tools _Apify_. Output berada di dalam `analisis_konten.xlsx`.
 
 Saya membuat proyek ini bersifat _open source_. Anda dapat menggunakan program kami untuk penelitian Anda jika diperlukan.
 
@@ -28,8 +28,8 @@ pip install requirements.txt
 ```
 source bin/activate
 ```
-5. Modifikasi program (jika perlu, ubah <sub>JSON</sub> untuk penyesuaian akun media sosial dan isi variabel <sub>files</sub> di <sub>analytics/analytic.py</sub> sesuai kebutuhan)
-6. Jalankan program <sub>python</sub>
+5. Modifikasi program (jika perlu, ubah `JSON` untuk penyesuaian akun media sosial dan isi variabel `files` di `analytics/analytic.py` sesuai kebutuhan)
+6. Jalankan program `python`
 ```
 python analytics/anaytic.py
 ```
