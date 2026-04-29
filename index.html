@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisis Media Sosial Parpol Kota Malang</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3e;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --pkb: #00c86e;
+    --psi: #f5a623;
+    --gerindra: #e63946;
+    --pdip: #4ecdc4;
+    --accent: #7c6af7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { 
+    background: var(--bg); 
+    color: var(--text); 
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 60px 40px 40px;
+    background: linear-gradient(135deg, #0a0a0f 0%, #12101f 60%, #0f1520 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-tag::before {
+    content: '◆';
+    font-size: 8px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  h1 span { color: var(--accent); }
+  .header-sub {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 580px;
+    margin-bottom: 32px;
+  }
+  .meta-pills {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .meta-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .meta-pill span { color: var(--text); font-weight: 600; }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 48px 40px; border-bottom: 1px solid var(--border); }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+  p { color: var(--text); margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* HERO METRICS */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .hero-card:hover { transform: translateY(-2px); }
+  .hero-card.pkb { border-top: 3px solid var(--pkb); }
+  .hero-card.psi { border-top: 3px solid var(--psi); }
+  .hero-card.gerindra { border-top: 3px solid var(--gerindra); }
+  .hero-card.pdip { border-top: 3px solid var(--pdip); }
+  .party-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .pkb .party-label { color: var(--pkb); }
+  .psi .party-label { color: var(--psi); }
+  .gerindra .party-label { color: var(--gerindra); }
+  .pdip .party-label { color: var(--pdip); }
+  .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .num-label { font-size: 12px; color: var(--muted); }
+
+  /* BAR CHART */
+  .bar-chart { margin: 20px 0; }
+  .bar-row { 
+    display: flex; align-items: center; gap: 12px; 
+    margin-bottom: 14px;
+  }
+  .bar-label { 
+    font-size: 13px; font-weight: 500; 
+    width: 90px; flex-shrink: 0; text-align: right; 
+    color: var(--text);
+  }
+  .bar-wrap { flex: 1; background: var(--surface2); border-radius: 4px; height: 28px; overflow: hidden; }
+  .bar-fill { 
+    height: 100%; border-radius: 4px; 
+    display: flex; align-items: center; padding-left: 10px;
+    font-size: 12px; font-weight: 600; color: #000;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+  }
+  .bar-fill.pkb { background: var(--pkb); }
+  .bar-fill.psi { background: var(--psi); }
+  .bar-fill.gerindra { background: var(--gerindra); }
+  .bar-fill.pdip { background: var(--pdip); }
+
+  /* STAT TABLE */
+  .stat-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  .stat-table th {
+    padding: 10px 14px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  .stat-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .stat-table tr:last-child td { border-bottom: none; }
+  .stat-table tr:hover td { background: rgba(124,106,247,0.04); }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+  }
+  .badge.pkb { background: rgba(0,200,110,0.15); color: var(--pkb); }
+  .badge.psi { background: rgba(245,166,35,0.15); color: var(--psi); }
+  .badge.gerindra { background: rgba(230,57,70,0.15); color: var(--gerindra); }
+  .badge.pdip { background: rgba(78,205,196,0.15); color: var(--pdip); }
+  .num { font-family: 'DM Mono', monospace; font-weight: 500; }
+  .highlight { color: #fff; font-weight: 600; }
+
+  /* INSIGHT CARDS */
+  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .insight-card.full { grid-column: 1 / -1; }
+  .insight-icon { font-size: 24px; margin-bottom: 12px; }
+  .insight-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .insight-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .insight-body strong { color: var(--text); }
+
+  /* CAUSAL CHAINS */
+  .causal-chain {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .causal-box {
+    flex: 1;
+    min-width: 140px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text);
+    position: relative;
+    margin: 4px;
+  }
+  .causal-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+    font-size: 20px;
+    padding: 0 4px;
+    font-weight: bold;
+  }
+  .causal-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* CORRELATION BOX */
+  .corr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .corr-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .corr-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .corr-positive { color: var(--pkb); }
+  .corr-neutral { color: var(--psi); }
+  .corr-negative { color: var(--gerindra); }
+  .corr-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  /* TIMELINE TREND */
+  .trend-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .trend-month {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    width: 70px;
+  }
+  .trend-bar-wrap { flex: 1; background: var(--surface2); border-radius: 4px; height: 22px; }
+  .trend-bar { height: 100%; background: var(--gerindra); border-radius: 4px; min-width: 2px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; color: #fff; font-family: 'DM Mono', monospace; }
+  .trend-num { width: 60px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; }
+
+  /* RECOMMENDATION CARDS */
+  .reco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .reco-card {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 20px;
+  }
+  .reco-title { font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 8px; }
+  .reco-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* VIRAL TABLE */
+  .viral-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .viral-item:last-child { border-bottom: none; }
+  .viral-rank {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--border);
+    width: 28px;
+    flex-shrink: 0;
+  }
+  .viral-info { flex: 1; }
+  .viral-caption { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .viral-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+  .viral-stat { 
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .viral-stat span { color: var(--text); font-weight: 600; }
+
+  /* dividers */
+  .divider { height: 1px; background: var(--border); margin: 32px 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  @media (max-width: 700px) {
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+    .insight-grid, .two-col, .reco-grid, .corr-grid { grid-template-columns: 1fr; }
+    .section { padding: 32px 20px; }
+    .header { padding: 40px 20px; }
+    .causal-chain { flex-direction: column; }
+  }
+  .footer {
+    padding: 32px 40px;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Scroll animation */
+  .animate { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .animate.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Riset Kuantitatif · Media Sosial · Instagram</div>
+  <h1>Dinamika Digital <span>Parpol</span><br>Kota Malang 2025</h1>
+  <p class="header-sub">Analisis mendalam kuantitatif, korelasi sebab-akibat, dan komparasi performa konten media sosial empat partai politik di Kota Malang.</p>
+  <div class="meta-pills">
+    <div class="meta-pill">Partai: <span>PKB · PSI · Gerindra · PDI-P</span></div>
+    <div class="meta-pill">Data: <span>204 konten</span></div>
+    <div class="meta-pill">Platform: <span>Instagram</span></div>
+    <div class="meta-pill">Periode: <span>2023 – Sep 2025</span></div>
+  </div>
+</div>
+
+<!-- SECTION 1: OVERVIEW -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">01 · Gambaran Umum</div>
+    <h2>Perbandingan Kinerja Lintas Partai</h2>
+    <p>Setiap partai mengupload 51 konten dalam dataset ini. Perbedaan performa sangat drastis—Gerindra mendominasi hampir seluruh metrik keterlibatan.</p>
+
+    <div class="hero-grid animate">
+      <div class="hero-card pkb">
+        <div class="party-label">PKB</div>
+        <div class="big-num">876</div>
+        <div class="num-label">Total Likes</div>
+        <div style="margin-top:12px; font-size:12px; color:var(--muted)">Avg/post: <span style="color:var(--text)">17.5</span></div>
+        <div style="font-size:12px; color:var(--muted)">Views: <span style="color:var(--text)">6,303</span></div>
+        <div style="font-size:12px; color:var(--muted)">Komentar: <span style="color:var(--text)">14</span></div>
+      </div>
+      <div class="hero-card psi">
+        <div class="party-label">PSI</div>
+        <div class="big-num">3,401</div>
+        <div class="num-label">Total Likes</div>
+        <div style="margin-top:12px; font-size:12px; color:var(--muted)">Avg/post: <span style="color:var(--text)">68.0</span></div>
+        <div style="font-size:12px; color:var(--muted)">Views: <span style="color:var(--text)">3,112</span></div>
+        <div style="font-size:12px; color:var(--muted)">Komentar: <span style="color:var(--text)">107</span></div>
+      </div>
+      <div class="hero-card gerindra">
+        <div class="party-label">Gerindra</div>
+        <div class="big-num">13,019</div>
+        <div class="num-label">Total Likes</div>
+        <div style="margin-top:12px; font-size:12px; color:var(--muted)">Avg/post: <span style="color:var(--text)">260.4</span></div>
+        <div style="font-size:12px; color:var(--muted)">Views: <span style="color:var(--text)">184,727</span></div>
+        <div style="font-size:12px; color:var(--muted)">Komentar: <span style="color:var(--text)">1,422</span></div>
+      </div>
+      <div class="hero-card pdip">
+        <div class="party-label">PDI-P</div>
+        <div class="big-num">1,474</div>
+        <div class="num-label">Total Likes</div>
+        <div style="margin-top:12px; font-size:12px; color:var(--muted)">Avg/post: <span style="color:var(--text)">29.5</span></div>
+        <div style="font-size:12px; color:var(--muted)">Views: <span style="color:var(--text)">992</span></div>
+        <div style="font-size:12px; color:var(--muted)">Komentar: <span style="color:var(--text)">28</span></div>
+      </div>
+    </div>
+
+    <h3>Rata-rata Likes per Posting</h3>
+    <div class="bar-chart animate">
+      <div class="bar-row">
+        <div class="bar-label">Gerindra</div>
+        <div class="bar-wrap"><div class="bar-fill gerindra" style="width:100%">260.4</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PSI</div>
+        <div class="bar-wrap"><div class="bar-fill psi" style="width:26.1%">68.0</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PDI-P</div>
+        <div class="bar-wrap"><div class="bar-fill pdip" style="width:11.3%">29.5</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PKB</div>
+        <div class="bar-wrap"><div class="bar-fill pkb" style="width:6.7%">17.5</div></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>Rata-rata Penayangan Video per Posting</h3>
+    <div class="bar-chart animate">
+      <div class="bar-row">
+        <div class="bar-label">Gerindra</div>
+        <div class="bar-wrap"><div class="bar-fill gerindra" style="width:100%">6,597</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PKB</div>
+        <div class="bar-wrap"><div class="bar-fill pkb" style="width:3.4%">225</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PSI</div>
+        <div class="bar-wrap"><div class="bar-fill psi" style="width:2%">130</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PDI-P</div>
+        <div class="bar-wrap"><div class="bar-fill pdip" style="width:2.5%">165</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: FULL STATS TABLE -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">02 · Data Statistik Lengkap</div>
+    <h2>Tabel Komparatif Detail</h2>
+    <table class="stat-table animate">
+      <thead>
+        <tr>
+          <th>Partai</th>
+          <th>Posting</th>
+          <th>Total Likes</th>
+          <th>Total Views</th>
+          <th>Total Komen</th>
+          <th>Avg Likes</th>
+          <th>Avg Views</th>
+          <th>Max Likes</th>
+          <th>Max Views</th>
+          <th>Engagement/Post</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge gerindra">Gerindra</span></td>
+          <td class="num">51</td>
+          <td class="num highlight">13,019</td>
+          <td class="num highlight">184,727</td>
+          <td class="num highlight">1,422</td>
+          <td class="num highlight">260.4</td>
+          <td class="num highlight">6,597</td>
+          <td class="num highlight">4,378</td>
+          <td class="num highlight">101,008</td>
+          <td class="num highlight">283.2</td>
+        </tr>
+        <tr>
+          <td><span class="badge psi">PSI</span></td>
+          <td class="num">51</td>
+          <td class="num">3,401</td>
+          <td class="num">3,112</td>
+          <td class="num">107</td>
+          <td class="num">68.0</td>
+          <td class="num">62.2</td>
+          <td class="num">3,059</td>
+          <td class="num">667</td>
+          <td class="num">68.8</td>
+        </tr>
+        <tr>
+          <td><span class="badge pdip">PDI-P</span></td>
+          <td class="num">51</td>
+          <td class="num">1,474</td>
+          <td class="num">992</td>
+          <td class="num">28</td>
+          <td class="num">29.5</td>
+          <td class="num">19.8</td>
+          <td class="num">58</td>
+          <td class="num">244</td>
+          <td class="num">29.5</td>
+        </tr>
+        <tr>
+          <td><span class="badge pkb">PKB</span></td>
+          <td class="num">51</td>
+          <td class="num">876</td>
+          <td class="num">6,303</td>
+          <td class="num">14</td>
+          <td class="num">17.5</td>
+          <td class="num">126.1</td>
+          <td class="num">70</td>
+          <td class="num">640</td>
+          <td class="num">17.5</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-grid animate">
+      <div class="insight-card">
+        <div class="insight-icon">🏆</div>
+        <div class="insight-title">Dominasi Gerindra</div>
+        <div class="insight-body">Gerindra menghasilkan <strong>14.9× lebih banyak likes</strong> dan <strong>29.3× lebih banyak views</strong> dibanding PKB, dengan jumlah posting yang sama (51 post). Ini bukan keunggulan tipis—ini jurang digital yang sangat lebar.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">⚡</div>
+        <div class="insight-title">PSI: Outlier Tunggal</div>
+        <div class="insight-body">Rata-rata likes PSI (68) terlihat tinggi, namun <strong>90% disumbang satu posting</strong> (Solidarity Run: 3,059 likes). Tanpa outlier itu, rata-rata PSI turun ke ~7.1—lebih rendah dari PDI-P. Distribusinya sangat tidak merata.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">😶</div>
+        <div class="insight-title">PKB: Views OK, Likes Sepi</div>
+        <div class="insight-body">PKB memiliki views video yang lebih baik dari PSI (6,303 vs 3,112), namun likes-nya paling rendah (876). Artinya konten ditonton tapi <strong>tidak memotivasi tindakan</strong> (like/komentar)—indikasi gap emosional konten.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">📅</div>
+        <div class="insight-title">PDI-P: Data Usang</div>
+        <div class="insight-body">Data PDI-P seluruhnya dari <strong>2023</strong>, sementara partai lain dari 2025. Ini membuat perbandingan tidak sepenuhnya apple-to-apple dan mengindikasikan <strong>stagnasi aktivitas digital</strong> PDI-P pasca-Pemilu 2024.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: CONTENT TYPE ANALYSIS -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">03 · Analisis Jenis Konten</div>
+    <h2>Format Konten vs Keterlibatan Audiens</h2>
+
+    <table class="stat-table animate">
+      <thead>
+        <tr>
+          <th>Partai</th>
+          <th>Jenis</th>
+          <th>Jumlah Post</th>
+          <th>Avg Likes</th>
+          <th>Avg Komentar</th>
+          <th>Avg Views</th>
+          <th>Temuan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge pkb">PKB</span></td>
+          <td>Video</td>
+          <td class="num">28</td>
+          <td class="num">18.4</td>
+          <td class="num">0.4</td>
+          <td class="num highlight">225</td>
+          <td style="font-size:12px;color:var(--muted)">Format terbaik PKB</td>
+        </tr>
+        <tr>
+          <td><span class="badge pkb">PKB</span></td>
+          <td>Sidecar</td>
+          <td class="num">7</td>
+          <td class="num highlight">20.1</td>
+          <td class="num">0.3</td>
+          <td class="num">0</td>
+          <td style="font-size:12px;color:var(--muted)">Likes tertinggi PKB</td>
+        </tr>
+        <tr>
+          <td><span class="badge psi">PSI</span></td>
+          <td>Sidecar</td>
+          <td class="num">5</td>
+          <td class="num highlight">614.8</td>
+          <td class="num highlight">18.8</td>
+          <td class="num">0</td>
+          <td style="font-size:12px;color:var(--muted)">Dikotori 1 outlier (3,059)</td>
+        </tr>
+        <tr>
+          <td><span class="badge gerindra">Gerindra</span></td>
+          <td>Video</td>
+          <td class="num">28</td>
+          <td class="num highlight">365.8</td>
+          <td class="num highlight">49.0</td>
+          <td class="num highlight">6,597</td>
+          <td style="font-size:12px;color:var(--muted)">Format paling viral</td>
+        </tr>
+        <tr>
+          <td><span class="badge gerindra">Gerindra</span></td>
+          <td>Image</td>
+          <td class="num">18</td>
+          <td class="num">132.6</td>
+          <td class="num">2.6</td>
+          <td class="num">0</td>
+          <td style="font-size:12px;color:var(--muted)">Foto pelantikan dominan</td>
+        </tr>
+        <tr>
+          <td><span class="badge pdip">PDI-P</span></td>
+          <td>Image</td>
+          <td class="num">28</td>
+          <td class="num">26.2</td>
+          <td class="num">0.4</td>
+          <td class="num">0</td>
+          <td style="font-size:12px;color:var(--muted)">Format dominan PDI-P</td>
+        </tr>
+        <tr>
+          <td><span class="badge pdip">PDI-P</span></td>
+          <td>Sidecar</td>
+          <td class="num">16</td>
+          <td class="num highlight">34.7</td>
+          <td class="num">0.9</td>
+          <td class="num">0</td>
+          <td style="font-size:12px;color:var(--muted)">Engagement terbaik PDI-P</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-card full animate">
+      <div class="insight-icon">🎬</div>
+      <div class="insight-title">Sebab-Akibat: Video → Viral di Gerindra, tapi Tidak Universal</div>
+      <div class="insight-body">
+        Gerindra membuktikan korelasi positif yang kuat: <strong>durasi video yang lebih panjang → lebih banyak views</strong> (r = 0.642, p &lt; 0.001). Ini berbeda signifikan dengan PKB (r = -0.028, p = 0.886) dan PSI (r = -0.012, p = 0.957) di mana panjang video tidak berpengaruh. Penyebabnya: konten Gerindra memiliki <strong>nilai informasi tinggi</strong> (sidang DPRD, reses, BBM, pelantikan) yang mendorong penonton menonton lebih lama. PKB dan PSI lebih banyak memproduksi konten seremonial/motivasi yang cenderung dilewati.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: CAUSAL ANALYSIS -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">04 · Analisis Sebab-Akibat</div>
+    <h2>Rantai Kausalitas Kinerja Digital</h2>
+
+    <h3>A. Konten Berbasis Isu Nyata → Engagement Tinggi (Gerindra)</h3>
+    <div class="causal-chain animate">
+      <div class="causal-box">
+        <div class="causal-label">Pemicu</div>
+        Konten membahas isu konkret: BBM, pengoplosan Pertamina, pajak, DPRD reses
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-box">
+        <div class="causal-label">Mekanisme</div>
+        Audiens yang terpengaruh langsung berbagi dan berkomentar (stakes tinggi)
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-box">
+        <div class="causal-label">Efek</div>
+        Algoritma Instagram mendeteksi engagement tinggi → distribusi organik meluas
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-box">
+        <div class="causal-label">Hasil</div>
+        Post BBM Pertamina: 4,378 likes, 101,008 views, 841 komentar
+      </div>
+    </div>
+
+    <h3 style="margin-top:28px">B. Konten Duka/Empati → Spike Engagement (Multi-Parpol)</h3>
+    <div class="causal-chain animate">
+      <div class="causal-box">
+        <div class="causal-label">Pemicu</div>
+        Meninggalnya Affan Kurniawan (driver ojol korban demo 1 Sept 2025)
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-box">
+        <div class="causal-label">Respons</div>
+        Gerindra post: 398 likes, 5,277 views. PKB doa bersama: 40 likes. Panji Bangsa: 27 likes
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-box">
+        <div class="causal-label">Kesimpulan</div>
+        Isu emosional nasional → engagement spike yang tidak bergantung pada kualitas produksi konten
+      </div>
+    </div>
+
+    <h3 style="margin-top:28px">C. Hashtag & Tagging → Pengaruh Moderat</h3>
+    <div class="corr-grid animate">
+      <div class="corr-card">
+        <div class="corr-value corr-positive">+0.22</div>
+        <div class="corr-label">Korelasi Tagged Users vs Likes<br><strong>PKB & PSI</strong><br>Pengaruh positif lemah</div>
+      </div>
+      <div class="corr-card">
+        <div class="corr-value corr-neutral">-0.06</div>
+        <div class="corr-label">Korelasi Tagged Users vs Likes<br><strong>Gerindra</strong><br>Tidak berpengaruh—kualitas konten lebih dominan</div>
+      </div>
+      <div class="corr-card">
+        <div class="corr-value corr-negative">-0.25</div>
+        <div class="corr-label">Korelasi Tagged Users vs Likes<br><strong>PDI-P</strong><br>Negatif—konten seremonial yang di-tag tidak resonan</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px">Catatan: Penggunaan hashtag berkorelasi positif dengan likes di PKB (+18.3 vs 14.4) dan PSI (+70.2 vs 34.3), namun pada PSI angka ini bias oleh satu post outlier.</p>
+
+    <div class="divider"></div>
+
+    <h3>D. Momen Politis Pelantikan → Ledakan Sementara (Gerindra)</h3>
+    <div class="insight-card animate">
+      <div class="insight-icon">📈</div>
+      <div class="insight-title">Tren Bulanan Gerindra: Puncak di Februari–Maret 2025</div>
+      <div class="insight-body" style="margin-bottom:16px">Rata-rata likes Gerindra mencapai puncaknya pada Februari 2025 (679.3 likes/post) bertepatan dengan pelantikan Walikota Malang. Ini kemudian turun drastis ke 23.0 di April. Korelasi jelas: <strong>momen pelantikan &amp; konsolidasi politik memicu engagement luar biasa</strong>, namun tidak berkelanjutan tanpa isu relevan baru.</div>
+
+      <div class="trend-row"><div class="trend-month">Feb 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:100%">679.3 avg likes</div></div></div>
+      <div class="trend-row"><div class="trend-month">Mar 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:34.7%">235.7</div></div></div>
+      <div class="trend-row"><div class="trend-month">Apr 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:2.5%; background: var(--border)">17.0</div></div></div>
+      <div class="trend-row"><div class="trend-month">Mei 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:6.9%">46.6</div></div></div>
+      <div class="trend-row"><div class="trend-month">Jun 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:14.9%">101.0</div></div></div>
+      <div class="trend-row"><div class="trend-month">Jul 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:3.5%; background: var(--border)">24.0</div></div></div>
+      <div class="trend-row"><div class="trend-month">Agt 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:16.5%">112.3</div></div></div>
+      <div class="trend-row"><div class="trend-month">Sep 2025</div><div class="trend-bar-wrap"><div class="trend-bar" style="width:4.3%">29.0</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: TOPIC ANALYSIS PKB -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">05 · Analisis Topik Konten</div>
+    <h2>PKB: Topik Konten vs Engagement</h2>
+
+    <table class="stat-table animate">
+      <thead>
+        <tr>
+          <th>Topik Konten</th>
+          <th>Jumlah Post</th>
+          <th>Avg Likes</th>
+          <th>Avg Views</th>
+          <th>Analisis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🏛️ Aspirasi / Legislatif</td>
+          <td class="num">15</td>
+          <td class="num highlight">20.1</td>
+          <td class="num highlight">224.5</td>
+          <td style="font-size:12px;color:var(--pkb)">Performa tertinggi PKB</td>
+        </tr>
+        <tr>
+          <td>✊ Demo / Isu Rakyat</td>
+          <td class="num">21</td>
+          <td class="num">16.5</td>
+          <td class="num">122.2</td>
+          <td style="font-size:12px;color:var(--muted)">Volume tinggi, engagement moderat</td>
+        </tr>
+        <tr>
+          <td>🕌 Keagamaan / Spiritual</td>
+          <td class="num">6</td>
+          <td class="num">14.7</td>
+          <td class="num">113.2</td>
+          <td style="font-size:12px;color:var(--muted)">Sesuai basis pemilih PKB</td>
+        </tr>
+        <tr>
+          <td>🎉 Ucapan / Seremonial</td>
+          <td class="num">11</td>
+          <td class="num">15.7</td>
+          <td class="num">64.1</td>
+          <td style="font-size:12px;color:var(--muted)">Engagement rendah, bisa dikurangi</td>
+        </tr>
+        <tr>
+          <td>📋 Konsolidasi / Internal</td>
+          <td class="num">6</td>
+          <td class="num" style="color:var(--gerindra)">9.8</td>
+          <td class="num">117.7</td>
+          <td style="font-size:12px;color:var(--gerindra)">Paling tidak efektif</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-card animate">
+      <div class="insight-icon">🔍</div>
+      <div class="insight-title">Temuan Kritis: Konten Panji Bangsa Mendominasi Top PKB</div>
+      <div class="insight-body">Dari 11 posting viral PKB (>24 likes), <strong>7 berasal dari akun Panji Bangsa</strong> (@dkcpanjibangsa_kotamlg), sayap pemuda PKB. Post Panji Bangsa seperti DIKBAR, Gathering, dan kolaborasi dengan Fraksi PKB mendapatkan rata-rata 52 likes dibandingkan rata-rata DPC PKB yang hanya 14 likes. Ini menunjukkan bahwa <strong>konten berbasis komunitas pemuda lebih resonan</strong> daripada komunikasi formal DPC.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: VIRAL CONTENT -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">06 · Analisis Konten Viral</div>
+    <h2>Konten Terbaik & Pola Keberhasilan</h2>
+
+    <div class="two-col animate">
+      <div>
+        <h3>🔴 Gerindra — Top Viral Posts</h3>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+          <div class="viral-item">
+            <div class="viral-rank">1</div>
+            <div class="viral-info">
+              <div class="viral-caption">Rapat Dengar Pendapat: Pertamina Patra Niaga & Pengoplosan BBM Ron 92</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>4,378</span></div>
+                <div class="viral-stat">👁 <span>101,008</span></div>
+                <div class="viral-stat">💬 <span>841</span></div>
+                <div class="viral-stat" style="color:var(--gerindra)">Video · Isu BBM Publik</div>
+              </div>
+            </div>
+          </div>
+          <div class="viral-item">
+            <div class="viral-rank">2</div>
+            <div class="viral-info">
+              <div class="viral-caption">HUT ke-17 Gerindra — Video Emosional Perjalanan Partai</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>2,230</span></div>
+                <div class="viral-stat">👁 <span>24,662</span></div>
+                <div class="viral-stat">💬 <span>102</span></div>
+                <div class="viral-stat" style="color:var(--gerindra)">Video · Nostalgia Partai</div>
+              </div>
+            </div>
+          </div>
+          <div class="viral-item">
+            <div class="viral-rank">3</div>
+            <div class="viral-info">
+              <div class="viral-caption">Post Rimzah: Kutipan Hadis tentang Pemimpin = Pelayan Rakyat</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>1,392</span></div>
+                <div class="viral-stat">👁 <span>0</span></div>
+                <div class="viral-stat">💬 <span>23</span></div>
+                <div class="viral-stat" style="color:var(--gerindra)">Image · Kutipan Inspiratif</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>🟠 PSI — Top Viral Posts</h3>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+          <div class="viral-item">
+            <div class="viral-rank">1</div>
+            <div class="viral-info">
+              <div class="viral-caption">Solidarity Run 2025 — Event Lari Komunitas (repost dari @eventlarijatim)</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>3,059</span></div>
+                <div class="viral-stat">👁 <span>0</span></div>
+                <div class="viral-stat">💬 <span>94</span></div>
+                <div class="viral-stat" style="color:var(--psi)">Sidecar · Event Komunitas</div>
+              </div>
+            </div>
+          </div>
+          <div class="viral-item">
+            <div class="viral-rank">2</div>
+            <div class="viral-info">
+              <div class="viral-caption">Gajayana Jalan Tahes — 10,000+ peserta, Kaesang hadir</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>75</span></div>
+                <div class="viral-stat">👁 <span>667</span></div>
+                <div class="viral-stat">💬 <span>1</span></div>
+                <div class="viral-stat" style="color:var(--psi)">Video · Event Massa</div>
+              </div>
+            </div>
+          </div>
+          <div class="viral-item">
+            <div class="viral-rank">3</div>
+            <div class="viral-info">
+              <div class="viral-caption">Ucapan selamat Musda PKS dari Ketua PSI</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>25</span></div>
+                <div class="viral-stat">👁 <span>136</span></div>
+                <div class="viral-stat">💬 <span>0</span></div>
+                <div class="viral-stat" style="color:var(--psi)">Video · Lintas Partai</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:20px">🟢 PKB — Top Viral Posts</h3>
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden;">
+          <div class="viral-item">
+            <div class="viral-rank">1</div>
+            <div class="viral-info">
+              <div class="viral-caption">Kolaborasi Panji Bangsa & Fraksi PKB — 26 orang difoto bersama</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>70</span></div>
+                <div class="viral-stat">👁 <span>0</span></div>
+                <div class="viral-stat">💬 <span>2</span></div>
+                <div class="viral-stat" style="color:var(--pkb)">Sidecar · Komunitas Pemuda</div>
+              </div>
+            </div>
+          </div>
+          <div class="viral-item">
+            <div class="viral-rank">2</div>
+            <div class="viral-info">
+              <div class="viral-caption">Doa Bersama Untuk Affan Kurniawan + Reses Anggota Dewan</div>
+              <div class="viral-stats">
+                <div class="viral-stat">❤️ <span>58 & 40</span></div>
+                <div class="viral-stat">👁 <span>640 & 424</span></div>
+                <div class="viral-stat" style="color:var(--pkb)">Video · Empati Publik</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: PENGARUH EKSTERNAL -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">07 · Faktor Pengaruh Eksternal</div>
+    <h2>Peristiwa Nasional & Dampaknya pada Konten Lokal</h2>
+
+    <div class="insight-grid animate">
+      <div class="insight-card">
+        <div class="insight-icon">⚡</div>
+        <div class="insight-title">Demo 1 September 2025</div>
+        <div class="insight-body">Seluruh 4 partai merespons aksi mahasiswa di Malang. <strong>Gerindra</strong> mengunggah pernyataan Presiden Prabowo → 5,277 views. <strong>PKB</strong> apresiasi aksi + doa bersama → spike kecil. <strong>PSI</strong> anti-provokasi → respons flat. Gerindra paling efektif mengkapitalisasi momen ini karena menempatkan narasi di level nasional (pernyataan presiden), bukan hanya lokal.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">⛽</div>
+        <div class="insight-title">Isu BBM / Pertamina</div>
+        <div class="insight-body">Post BBM Gerindra menjadi konten <strong>paling viral dalam dataset</strong> (101,008 views). Isu ini menyentuh kepentingan langsung masyarakat luas. Fakta bahwa hanya Gerindra yang berhasil mengkapitalisasi isu ini menunjukkan <strong>keunggulan akses informasi legislatif</strong> (Wakil Ketua DPRD Rimzah hadir langsung di RDPU).</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">🗳️</div>
+        <div class="insight-title">Pelantikan Walikota Malang</div>
+        <div class="insight-body">Pelantikan Wahyu Hidayat (Gerindra) Februari 2025 menghasilkan gelombang konten dengan engagement tertinggi: post pelantikan 154–188 likes, video HUT Gerindra 2,230 likes. Ini membuktikan bahwa <strong>kemenangan pilkada lokal = konten modal terbesar</strong> untuk akun partai di media sosial.</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">🏃</div>
+        <div class="insight-title">Event Komunitas — PSI</div>
+        <div class="insight-body">Solidarity Run dan Jalan Tahes Gajayana membuktikan bahwa <strong>event offline → konten online high-engagement</strong>. 10,000+ peserta jalan sehat menghasilkan banyak akun yang men-tag PSI. Namun keberlanjutan strategi ini bergantung pada frekuensi event yang mahal secara sumber daya.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 8: REKOMENDASI -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">08 · Rekomendasi Strategis</div>
+    <h2>Strategi Peningkatan Berbasis Data</h2>
+
+    <div class="reco-grid animate">
+      <div class="reco-card">
+        <div class="reco-title">🟢 PKB: Perbanyak Konten Panji Bangsa & Isu Konkret</div>
+        <div class="reco-body">Konten Panji Bangsa menghasilkan 3× lebih banyak likes dari DPC. Rekomendasikan kolaborasi lintas akun lebih aktif. Fokus pada konten aspirasi legislatif dan demo rakyat yang terbukti menghasilkan views 80% lebih tinggi dari konten seremonial.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-title">🟠 PSI: Kurangi Ketergantungan pada Event Besar</div>
+        <div class="reco-body">Tanpa Solidarity Run, engagement PSI sangat rendah. Perlu konten editorial harian berbasis isu kebijakan lokal Kota Malang. Fokus di RUU Perampasan Aset sudah tepat—tingkatkan dengan infografis data konkret, bukan hanya teks pendapat.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-title">🔴 Gerindra: Pertahankan Konten Berbasis Isu & Durasi Video</div>
+        <div class="reco-body">Korelasi kuat antara durasi video dan views (r=0.642) membuktikan: buat video yang informatif dan panjang. Replikasi format RDPU BBM—undang media coverage, bahas isu yang menyentuh dompet warga. Jaga momentum dengan 1-2 video substantif per minggu.</div>
+      </div>
+      <div class="reco-card">
+        <div class="reco-title">🔵 PDI-P: Reaktivasi Digital Segera</div>
+        <div class="reco-body">Data 2023 menunjukkan PDI-P memiliki basis engagement yang stabil (avg 29 likes), namun tidak ada data 2025 yang masuk. Reaktivasi akun dengan konten responsif terhadap isu lokal Malang 2025—khususnya kritik kebijakan pemerintahan baru yang merupakan rival politik PDI-P.</div>
+      </div>
+      <div class="reco-card" style="border-left-color: var(--psi)">
+        <div class="reco-title">⚡ Semua Partai: Eksploitasi Momen Emosional</div>
+        <div class="reco-body">Peristiwa seperti kematian Affan Kurniawan, demo mahasiswa, dan pelantikan menghasilkan engagement spike. Bangun SOP respons konten cepat (dalam 2-4 jam) untuk memanfaatkan momen dengan narasi empati yang autentik, bukan politis.</div>
+      </div>
+      <div class="reco-card" style="border-left-color: var(--pkb)">
+        <div class="reco-title">🎯 Insight Umum: Sidecar adalah Format Tersembunyi</div>
+        <div class="reco-body">Sidecar (carousel) menghasilkan likes tertinggi untuk PKB (20.1) dan PSI (614.8, tapi outlier). Format ini mendorong swipe berulang yang meningkatkan waktu interaksi. Rekomendasikan infografis multi-slide berbasis data kebijakan untuk semua partai.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 9: KESIMPULAN -->
+<div class="section">
+  <div class="container">
+    <div class="section-label">09 · Kesimpulan</div>
+    <h2>Sintesis Temuan Kunci</h2>
+
+    <div class="insight-card full animate">
+      <div class="insight-title" style="font-size:18px; margin-bottom:16px">Faktor Penentu Dominasi Digital Parpol Malang</div>
+      <div class="insight-body" style="font-size:14px; line-height:1.8;">
+        <p><strong>1. Relevansi Isu Lokal > Kuantitas Posting.</strong> Gerindra unggul bukan karena frekuensi (51 post sama dengan semua), tapi karena konten membahas isu yang secara langsung memengaruhi kehidupan warga Malang—BBM, pajak, pelantikan, reses DPRD. Ini menciptakan <em>social proof</em> bahwa partai aktif bekerja, bukan sekadar eksis di media sosial.</p>
+        <p><strong>2. Akses Kekuasaan Eksekutif = Modal Konten Tak Ternilai.</strong> Kemenangan pilkada Gerindra (Wahyu Hidayat sebagai Walikota) memberikan konten pelantikan bernilai tinggi yang organik dan tidak bisa direplikasi pesaing. Ini adalah kausalitas langsung antara kemenangan politik offline → dominasi digital online.</p>
+        <p><strong>3. Konten Emosional Memotong Batas Partisan.</strong> Post tentang Affan Kurniawan, video HUT Gerindra yang emosional, dan kutipan Hadis tentang pemimpin mendapatkan engagement lintas segmen. Emosi adalah bahasa universal yang bekerja terlepas dari ideologi partai.</p>
+        <p><strong>4. Komunitas Pemuda PKB (Panji Bangsa) adalah Aset Strategis yang Belum Dioptimalkan.</strong> Dengan rata-rata 3× engagement lebih tinggi dari akun resmi DPC, Panji Bangsa membuktikan bahwa autentisitas komunitas > formalitas institusi dalam ekosistem media sosial.</p>
+        <p><strong>5. PSI: Potensi Tinggi, Konsistensi Rendah.</strong> Kemampuan menyelenggarakan event massa (Solidarity Run, Jalan Tahes) adalah keunggulan nyata, tapi engagement harian yang sangat rendah (median 4 likes per post) menunjukkan partai belum memiliki strategi konten yang berkelanjutan.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    Analisis berdasarkan dataset Instagram · 204 konten · 4 partai · Kota Malang · Riset Digital Politik 2025<br>
+    Diolah menggunakan Python (pandas, scipy) · Korelasi Pearson · Uji signifikansi p &lt; 0.05
+  </div>
+</div>
+
+<script>
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
